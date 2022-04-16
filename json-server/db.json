@@ -152,7 +152,9 @@
         "/publish-manage",
         "/publish-manage/unpublished",
         "/publish-manage/published",
-        "/publish-manage/sunset"
+        "/publish-manage/sunset",
+        "/news-manage/category",
+        "/audit-manage/audit"
       ]
     }
   ],

@@ -58,7 +58,7 @@ export default function RightList() {
     },
     {
       title: '操作',
-      // 不写key就是全部，写了key就是render里面的key
+      // 不写dataIndex就是全部，写了key就是render里面的key
       render: (item: Iright) => {
         return (
           <div>

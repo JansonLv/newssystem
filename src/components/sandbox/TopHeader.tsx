@@ -30,7 +30,6 @@ export default function TopHeader() {
 
       <div style={{ float: 'right' }}>
         <span>欢迎admin回来</span>
-        {/* TODO: 使用tsx就会有问题，不知如何解决，因此使用js */}
         <Dropdown overlay={menu}>
           <Avatar shape="square" size="large" icon={<UserOutlined />} />
         </Dropdown>

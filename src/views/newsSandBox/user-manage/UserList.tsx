@@ -40,9 +40,11 @@ export default function UserList() {
   const [users, setUsers] = useState<Iuser[]>([])
   const [updateUserInfo, setupdateUserInfo] = useState<Iuser>()
 
+  const { roleId, region } = JSON.parse(localStorage.getItem('token')!)
+
   const createUser = (user: Iuser) => {
     axios
-      .post('http://127.0.0.1:8083/users', {
+      .post('/users', {
         ...user,
         roleState: true,
         default: false,
@@ -60,7 +62,7 @@ export default function UserList() {
   }
   const updateUser = (user: Iuser) => {
     axios
-      .patch(`http://127.0.0.1:8083/users/${updateUserInfo?.id}`, {
+      .patch(`/users/${updateUserInfo?.id}`, {
         ...user,
       })
       .then((res) => {
@@ -82,21 +84,30 @@ export default function UserList() {
   }
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8083/users?_expand=role').then((res) => {
-      setUsers(res.data)
+    axios.get('/users?_expand=role').then((res) => {
+      var users = res.data as Iuser[]
+      if (roleId > 1) {
+        users = users.filter((item) => item.roleId > roleId)
+      }
+
+      if (region !== '') {
+        users = users.filter((item) => item.region === region)
+      }
+
+      setUsers(users)
     })
-  }, [])
+  }, [roleId, region])
 
   const [regions, setRegions] = useState<Iregion[]>([])
   useEffect(() => {
-    axios.get('http://127.0.0.1:8083/regions').then((res) => {
+    axios.get('/regions').then((res) => {
       setRegions(res.data)
     })
   }, [])
 
   const [roles, setRoles] = useState<Irole[]>([])
   useEffect(() => {
-    axios.get('http://127.0.0.1:8083/roles').then((res) => {
+    axios.get('/roles').then((res) => {
       setRoles(res.data)
     })
   }, [])
@@ -121,7 +132,7 @@ export default function UserList() {
         },
       ],
       onFilter: (value: string | number | boolean, record: Iuser) => {
-        if (value === '全球') {
+        if (value === '全球 ') {
           return record.region === ''
         }
         return value === record.region
@@ -150,7 +161,7 @@ export default function UserList() {
             onChange={(checked: boolean) => {
               item.roleState = !item.roleState
               setUsers([...users])
-              axios.patch(`http://127.0.0.1:8083/users/${item.id}`, {
+              axios.patch(`/users/${item.id}`, {
                 roleState: checked,
               })
             }}
@@ -181,8 +192,8 @@ export default function UserList() {
             <Popconfirm
               title="你确定要删除吗"
               onConfirm={() => {
-                axios.delete(`http://127.0.0.1:8083/users/${item.id}`)
-                setUsers(users.filter((v) => v.id != item.id))
+                axios.delete(`/users/${item.id}`)
+                setUsers(users.filter((v) => v.id !== item.id))
               }}
               okText="Yes"
               cancelText="No"
@@ -251,12 +262,10 @@ export default function UserList() {
           setIsUpdateVisible(false)
         }}
         onOk={() => {
-          console.log(form)
           form
             .validateFields()
             .then((value) => {
               // form内无id，因此无法直接使用
-              console.log(value)
               form.resetFields()
               updateUser(value)
               setIsUpdateVisible(false)

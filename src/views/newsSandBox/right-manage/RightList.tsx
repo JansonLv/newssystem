@@ -13,10 +13,22 @@ interface Iright {
 }
 
 export default function RightList() {
+  useEffect(() => {
+    axios.get('/rights?_embed=children').then((res) => {
+      var data = res.data
+      data.forEach((item: any) => {
+        if (item.children.length === 0) {
+          item.children = undefined
+        }
+      })
+      setDataSource(data)
+    })
+  }, [])
+
   const deleteRight = (item: Iright) => {
     if (item.grade === 1) {
       setDataSource(dataSource.filter((data) => data.id !== item.id))
-      axios.delete(`http://127.0.0.1:8083/rights/${item.id}`).then(() => {
+      axios.delete(`/rights/${item.id}`).then(() => {
         console.log('删除成功')
       })
     } else {
@@ -26,7 +38,7 @@ export default function RightList() {
         }
       })
       setDataSource([...dataSource])
-      axios.delete(`http://127.0.0.1:8083/children/${item.id}`).then(() => {
+      axios.delete(`/children/${item.id}`).then(() => {
         console.log('删除成功')
       })
     }
@@ -103,27 +115,14 @@ export default function RightList() {
     item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
     setDataSource([...dataSource])
 
-    var patchPath = `http://127.0.0.1:8083/rights/${item.id}`
+    var patchPath = `/rights/${item.id}`
     if (item.grade === 2) {
-      patchPath = `http://127.0.0.1:8083/children/${item.id}`
+      patchPath = `/children/${item.id}`
     }
     axios.patch(patchPath, { pagepermisson: item.pagepermisson }).then(() => {
       console.log('修改成功')
     })
   }
-
-  useEffect(() => {
-    fetch('http://127.0.0.1:8083/rights?_embed=children')
-      .then((res) => res.json())
-      .then((res) => {
-        res.forEach((item: any) => {
-          if (item.children.length === 0) {
-            item.children = undefined
-          }
-        })
-        setDataSource(res)
-      })
-  }, [])
 
   const [dataSource, setDataSource] = useState<Iright[]>([])
 

@@ -1,16 +1,29 @@
 import { Layout } from 'antd'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import Home from './Home/Home'
-import NoPermission from './NoPermission/NoPermission'
-import RightList from './right-manage/RightList'
-import RoleList from './right-manage/RoleList'
-import UserList from './user-manage/UserList'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import './newSandBox.css'
 import SideMenu from '../../components/sandbox/SideMenu'
 import TopHeader from '../../components/sandbox/TopHeader'
+import NewsRouter from '../../components/sandbox/NewsRouter'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const { Content } = Layout
 export default function NewsSandBox() {
+  const nav = useNavigate()
+
+  useEffect(() => {
+    if (localStorage.getItem('token') === '') {
+      console.log('login')
+      nav('/login')
+    }
+  })
+
+  // NProgress.start()
+  // useEffect(() => {
+  //   NProgress.done()
+  // }, [])
+
   return (
     <Layout>
       <SideMenu />
@@ -25,20 +38,7 @@ export default function NewsSandBox() {
             overflow: 'auto',
           }}
         >
-          <Routes>
-            <Route path="/home" element={<Home />}></Route>
-            <Route path="/user-manage/list" element={<UserList />}></Route>
-            <Route
-              path="/right-manage/role/list/"
-              element={<RoleList />}
-            ></Route>
-            <Route
-              path="/right-manage/right/list/"
-              element={<RightList />}
-            ></Route>
-            <Route path="/" element={<Navigate to="/home" />}></Route>
-            <Route path="*" element={<NoPermission />}></Route>
-          </Routes>
+          <NewsRouter />
         </Content>
       </Layout>
     </Layout>

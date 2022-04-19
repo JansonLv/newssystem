@@ -1,14 +1,8 @@
 import { Layout, Menu } from 'antd'
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './index.css'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -64,24 +58,27 @@ export default function SideMenu() {
 
   const [menuList, setMenuList] = useState<IMenu[]>([])
   useEffect(() => {
-    fetch('http://127.0.0.1:8083/rights?_embed=children')
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res)
-        setMenuList(res)
-      })
+    axios.get('/rights?_embed=children').then((res) => {
+      console.log(res)
+      setMenuList(res.data)
+    })
   }, [])
 
-  const checkPagePermission = (pagepermisson?: number) => {
-    return pagepermisson !== 1
+  const {
+    role: { rights },
+  } = JSON.parse(localStorage.getItem('token')!)
+
+  const checkPagePermission = (item: IMenu) => {
+    return item.pagepermisson && rights.includes(item.key)
   }
 
   const renderMenu = (menuList: IMenu[]): any => {
     return menuList.map((item: IMenu) => {
-      if (checkPagePermission(item.pagepermisson)) {
-        return
-      }
-      if (item.children && item.children.length > 0) {
+      if (
+        checkPagePermission(item) &&
+        item.children &&
+        item.children.length > 0
+      ) {
         return (
           <SubMenu key={item.key} title={item.title}>
             {renderMenu(item.children)}
@@ -90,17 +87,20 @@ export default function SideMenu() {
       }
 
       return (
-        <Menu.Item
-          key={item.key}
-          onClick={() => {
-            nav(item.key)
-          }}
-        >
-          {item.title}
-        </Menu.Item>
+        checkPagePermission(item) && (
+          <Menu.Item
+            key={item.key}
+            onClick={() => {
+              nav(item.key)
+            }}
+          >
+            {item.title}
+          </Menu.Item>
+        )
       )
     })
   }
+
   const openKeys: string[] = ['/' + loaction.pathname.split('/')[1]]
   const selectedKeys: string[] = [loaction.pathname]
   return (

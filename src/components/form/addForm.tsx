@@ -1,11 +1,9 @@
 import { Form, Input, Select } from 'antd'
-import { format } from 'path'
 import React, { useEffect, useState } from 'react'
 
 const AddForm = (props: any) => {
   const [regionDisabled, setRegionDisabled] = useState<boolean>(false)
   useEffect(() => {
-    console.log(props.roleId)
     //   这个不行，应该是多次加载问题导致的，理论上是可以的
     if (props.roleId) {
       setRegionDisabled(true)

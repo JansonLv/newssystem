@@ -1,4 +1,4 @@
-import { Button, Modal, Popconfirm, Popover, Table, Tree } from 'antd'
+import { Button, Modal, Popconfirm, Table, Tree } from 'antd'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { DeleteOutlined, UnorderedListOutlined } from '@ant-design/icons'
@@ -16,14 +16,14 @@ export default function RoleList() {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8083/roles').then((res) => {
+    axios.get('/roles').then((res) => {
       setRoleList(res.data)
     })
   }, [])
 
   const [rightList, setRightList] = useState([])
   useEffect(() => {
-    axios.get('http://127.0.0.1:8083/rights?_embed=children').then((res) => {
+    axios.get('/rights?_embed=children').then((res) => {
       setRightList(res.data)
     })
   }, [])
@@ -71,7 +71,7 @@ export default function RoleList() {
                   setSelectedKeys(item.rights)
                   // 将数据更新到服务器
                   axios
-                    .patch(`http://127.0.0.1:8083/roles/${item.id}`, {
+                    .patch(`/roles/${item.id}`, {
                       rights: item.rights,
                     })
                     .catch((err) => console.log(err))
@@ -82,11 +82,9 @@ export default function RoleList() {
             <Popconfirm
               title="你确定要删除吗"
               onConfirm={() => {
-                axios
-                  .delete(`http://127.0.0.1:8083/roles/${item.id}`)
-                  .then(() => {
-                    console.log('删除成功')
-                  })
+                axios.delete(`/roles/${item.id}`).then(() => {
+                  console.log('删除成功')
+                })
                 setRoleList(roleList.filter((v) => item.id !== v.id))
               }}
               okText="Yes"

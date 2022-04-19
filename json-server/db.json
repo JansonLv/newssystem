@@ -10,7 +10,7 @@
       "roleId": 1
     },
     {
-      "username": "铁锤",
+      "username": "janson",
       "password": "123",
       "roleState": true,
       "default": false,
@@ -71,6 +71,24 @@
       "region": "亚洲",
       "roleId": 3,
       "id": 8
+    },
+    {
+      "username": "jansonlv@qq.com",
+      "password": "248655",
+      "region": "",
+      "roleId": 1,
+      "roleState": true,
+      "default": false,
+      "id": 9
+    },
+    {
+      "username": "jansonlv",
+      "password": "123456",
+      "region": "欧洲",
+      "roleId": 2,
+      "roleState": true,
+      "default": false,
+      "id": 10
     }
   ],
   "roles": [

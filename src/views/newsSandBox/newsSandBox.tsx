@@ -7,6 +7,7 @@ import TopHeader from '../../components/sandbox/TopHeader'
 import NewsRouter from '../../components/sandbox/NewsRouter'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import React from 'react'
 
 const { Content } = Layout
 export default function NewsSandBox() {

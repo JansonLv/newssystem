@@ -3,24 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
+    "@types/draft-js": "^0.11.9",
+    "@types/draftjs-to-html": "^0.8.1",
+    "@types/html-to-draftjs": "^1.4.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
-    "@types/react": "^17.0.2",
-    "@types/react-dom": "^17.0.2",
+    "@types/react": "^17.0.14",
+    "@types/react-dom": "^17.0.14",
+    "@types/react-draft-wysiwyg": "^1.13.4",
     "antd": "^4.19.5",
     "axios": "^0.26.1",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
+    "draftjs-to-markdown": "^0.6.0",
+    "html-to-draftjs": "^1.5.0",
     "http-proxy-middleware": "^2.0.4",
     "nprogress": "^0.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-draft-wysiwyg": "^1.14.7",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-tsparticles": "^2.0.6",
     "sass": "^1.50.0",
-    "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
@@ -28,12 +33,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -48,6 +47,9 @@
     ]
   },
   "devDependencies": {
-    "@types/nprogress": "^0.2.0"
+    "@types/nprogress": "^0.2.0",
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2",
+    "typescript": "4.1.3"
   }
 }

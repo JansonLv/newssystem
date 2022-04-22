@@ -2,13 +2,7 @@ import { Button, Modal, Popconfirm, Table, Tree } from 'antd'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { DeleteOutlined, UnorderedListOutlined } from '@ant-design/icons'
-
-interface Irole {
-  id: number
-  roleName: string
-  roleType: number
-  rights: string[]
-}
+import { Irole } from '../../../models/role'
 
 export default function RoleList() {
   const [roleList, setRoleList] = useState<Irole[]>([])

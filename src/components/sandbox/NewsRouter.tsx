@@ -1,12 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { Iright } from '../../models/right'
 import Audit from '../../views/newsSandBox/audit-manage/Audit'
 import AuditList from '../../views/newsSandBox/audit-manage/AuditList'
 import Home from '../../views/newsSandBox/Home/Home'
 import NewsAdd from '../../views/newsSandBox/news-manage/NewsAdd'
 import NewsCategory from '../../views/newsSandBox/news-manage/NewsCategory'
 import NewsDraft from '../../views/newsSandBox/news-manage/NewsDraft'
+import NewsPreview from '../../views/newsSandBox/news-manage/NewsPreview'
+import NewsUpdate from '../../views/newsSandBox/news-manage/NewsUpdate'
 import NoPermission from '../../views/newsSandBox/NoPermission/NoPermission'
 import Published from '../../views/newsSandBox/publish-manage/Published'
 import Sunset from '../../views/newsSandBox/publish-manage/Sunset'
@@ -28,16 +31,9 @@ const LocalRouterMap: Map<string, React.ReactElement> = new Map([
   ['/publish-manage/unpublished', <Unpublished />],
   ['/publish-manage/published', <Published />],
   ['/publish-manage/sunset', <Sunset />],
+  ['/news-manage/preview/:id', <NewsPreview />],
+  ['/news-manage/update/:id', <NewsUpdate />],
 ])
-
-interface Iright {
-  id: number
-  title: string
-  rightId?: number
-  key: string
-  pagepermisson: number
-  grade: number
-}
 
 export default function () {
   const [backRouteList, setBackRouteList] = useState<Iright[]>([])
@@ -46,7 +42,6 @@ export default function () {
       axios.get('http://localhost:8083/rights'),
       axios.get('http://localhost:8083/children'),
     ]).then((res) => {
-      console.log(res)
       setBackRouteList([...res[0].data, ...res[1].data])
     })
   }, [])
@@ -64,7 +59,7 @@ export default function () {
   return (
     <Routes>
       {backRouteList
-        .filter((item) => item.pagepermisson == 1)
+        .filter((item) => item.pagepermisson === 1 || item.routepermisson === 1)
         .map((item: Iright) =>
           checkUserPermission(item) ? (
             <Route

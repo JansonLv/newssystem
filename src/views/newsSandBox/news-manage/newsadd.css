@@ -15,3 +15,7 @@
 .active {
   display: none;
 }
+
+.edit button {
+  margin-right: 5px;
+}

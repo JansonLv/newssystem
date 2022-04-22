@@ -4,33 +4,13 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import AddForm from '../../../components/form/addForm'
 import { ColumnsType } from 'antd/lib/table'
-interface Iuser {
-  id: number
-  username: string
-  pasword: string
-  roleState: boolean
-  default: boolean
-  region: string
-  roleId: number
-  role: Irole
-}
-
-interface Irole {
-  id: number
-  roleName: string
-  roleType: number
-  rights: string[]
-}
+import { Irole } from '../../../models/role'
+import { Iuser } from '../../../models/user'
 
 interface Iregion {
   id: number
   title: string
   value: string
-}
-
-interface Irole {
-  id: number
-  roleName: string
 }
 
 export default function UserList() {

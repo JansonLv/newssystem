@@ -59,7 +59,6 @@ export default function SideMenu() {
   const [menuList, setMenuList] = useState<IMenu[]>([])
   useEffect(() => {
     axios.get('/rights?_embed=children').then((res) => {
-      console.log(res)
       setMenuList(res.data)
     })
   }, [])

@@ -2,13 +2,9 @@ import { Button, Popconfirm, Popover, Switch, Table, Tag } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import axios from 'axios'
-interface Iright {
-  id: number
-  title: string
-  rightId?: number
-  key: string
-  pagepermisson: number
-  grade: number
+import { Iright } from '../../../models/right'
+
+interface right extends Iright {
   children?: Iright[]
 }
 
@@ -25,7 +21,7 @@ export default function RightList() {
     })
   }, [])
 
-  const deleteRight = (item: Iright) => {
+  const deleteRight = (item: right) => {
     if (item.grade === 1) {
       setDataSource(dataSource.filter((data) => data.id !== item.id))
       axios.delete(`/rights/${item.id}`).then(() => {
@@ -111,7 +107,7 @@ export default function RightList() {
       },
     },
   ]
-  const switchChange = (item: Iright) => {
+  const switchChange = (item: right) => {
     item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
     setDataSource([...dataSource])
 
@@ -124,7 +120,7 @@ export default function RightList() {
     })
   }
 
-  const [dataSource, setDataSource] = useState<Iright[]>([])
+  const [dataSource, setDataSource] = useState<right[]>([])
 
   return (
     <div>

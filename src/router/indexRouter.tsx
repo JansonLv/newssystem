@@ -22,6 +22,7 @@ export default function indexRouter() {
             </LoginRouteHook>
           }
         />
+        {/* <AuthHook path="*" element={<NewsSandBox></NewsSandBox>} /> */}
       </Routes>
     </BrowserRouter>
   )
@@ -42,6 +43,27 @@ const LoginRouteHook = (props: {
 
   return localStorage.getItem('token') ? (
     <>{children}</>
+  ) : (
+    <Navigate
+      replace={true}
+      to="/login"
+      state={{ from: `${location.pathname}${location.search}` }}
+    />
+  )
+}
+
+// 会报错，[AuthHook] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>
+const AuthHook = (props: {
+  path: string
+  element: React.ReactElement
+}): JSX.Element => {
+  const { path, element } = props
+  const location = useLocation()
+
+  return localStorage.getItem('token') ? (
+    <Routes>
+      <Route path={path} element={element} />{' '}
+    </Routes>
   ) : (
     <Navigate
       replace={true}

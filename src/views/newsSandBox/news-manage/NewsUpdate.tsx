@@ -4,18 +4,29 @@ import React, { useEffect, useState } from 'react'
 import './newsadd.css'
 import DraftEditor from '../../../components/news-manage/editor'
 import { AuditState } from '../../../util/meta'
-import { useNavigate } from 'react-router-dom'
-import { News } from '../../../models/news'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { FullNews, News } from '../../../models/news'
 import { category } from '../../../models/category'
 const { Step } = Steps
 
-export default function NewsAdd() {
+export default function NewsUpdate() {
   const [current, setCurrent] = useState(0)
   const [categories, setCategories] = useState<category[]>([])
   const [form] = Form.useForm()
-  const [content, setContent] = useState('')
-  const [titleCateId, setTitleCateId] = useState<InputForm>()
   const nav = useNavigate()
+  const location = useLocation()
+  var newInfo = location.state as FullNews
+  if (!newInfo) {
+    return <div>非法请求</div>
+  }
+  useEffect(() => {
+    if (newInfo) {
+      form.setFieldsValue({
+        title: newInfo.title,
+        categoryId: newInfo.categoryId,
+      })
+    }
+  }, [newInfo])
 
   useEffect(() => {
     axios.get('/categories').then((res) => {
@@ -26,11 +37,12 @@ export default function NewsAdd() {
   const next = () => {
     if (current === 0) {
       form.validateFields().then((res) => {
-        setTitleCateId(res)
+        newInfo.title = res.title
+        newInfo.categoryId = res.categoryId
         setCurrent(current + 1)
       })
     } else if (current === 1) {
-      if (content !== '' && content.trim() !== '<p></p>') {
+      if (newInfo.content !== '' && newInfo.content.trim() !== '<p></p>') {
         setCurrent(current + 1)
       } else {
         message.error('新闻内容不能为空')
@@ -43,34 +55,30 @@ export default function NewsAdd() {
   }
 
   const saveNews = (auditState: number) => {
-    const user = JSON.parse(localStorage.getItem('token')!)
-    const news: News = {
-      title: titleCateId!.title,
-      categoryId: titleCateId!.categoryId,
-      content: content,
-      region: user.region ? user.region : '全球',
-      author: user.username,
-      roleId: user.roleId,
-      auditState: auditState,
-      publishState: 0,
-      createTime: Date.now(),
-      star: 0,
-      view: 0,
-      id: 0,
-      publishTime: 0,
-    }
-    axios.post('/news', news).then((res) => {
-      console.log(res)
-      if (res.status === 201) {
-        message.info(auditState === 0 ? '保存草稿箱成功' : '新闻提交审核成功')
-        nav(auditState === 0 ? '/news-manage/draft' : '/audit-manage/list')
-      }
-    })
+    axios
+      .patch(`/news/${newInfo.id}`, {
+        title: newInfo.title,
+        categoryId: newInfo.categoryId,
+        content: newInfo.content,
+      })
+      .then((res) => {
+        console.log(res)
+        if (res.status === 200) {
+          message.info(auditState === 0 ? '修改成功' : '新闻提交审核成功')
+          nav(auditState === 0 ? '/news-manage/draft' : '/audit-manage/list')
+        }
+      })
   }
 
   return (
     <div>
-      <PageHeader className="site-page-header" title="撰写新闻" />
+      <PageHeader
+        className="site-page-header"
+        title="修改新闻"
+        onBack={() => {
+          nav(-1)
+        }}
+      />
       <Steps current={current}>
         <Step title="基本信息" description="新闻标题，新闻分类" />
         <Step title="新闻内容" description="新闻主题内容" />
@@ -105,8 +113,9 @@ export default function NewsAdd() {
         <div className={current === 1 ? '' : 'active'}>
           <DraftEditor
             getContent={(content: string) => {
-              setContent(content)
+              newInfo.content = content
             }}
+            content={newInfo.content}
           />
         </div>
         <div className={current === 2 ? '' : 'active'}></div>

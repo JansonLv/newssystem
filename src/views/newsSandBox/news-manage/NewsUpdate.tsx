@@ -54,12 +54,13 @@ export default function NewsUpdate() {
     setCurrent(current - 1)
   }
 
-  const saveNews = (auditState: number) => {
+  const updateNews = (auditState: number) => {
     axios
       .patch(`/news/${newInfo.id}`, {
         title: newInfo.title,
         categoryId: newInfo.categoryId,
         content: newInfo.content,
+        auditState: auditState,
       })
       .then((res) => {
         console.log(res)
@@ -135,7 +136,7 @@ export default function NewsUpdate() {
               <Button
                 type="primary"
                 onClick={() => {
-                  saveNews(AuditState.noAudit)
+                  updateNews(AuditState.noAudit)
                 }}
               >
                 保存草稿
@@ -144,7 +145,7 @@ export default function NewsUpdate() {
                 style={{ marginLeft: '8px' }}
                 type="primary"
                 onClick={() => {
-                  saveNews(AuditState.waitAudit)
+                  updateNews(AuditState.waitAudit)
                 }}
               >
                 提交审核

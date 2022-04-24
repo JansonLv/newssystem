@@ -13,7 +13,7 @@ import NewsUpdate from '../../views/newsSandBox/news-manage/NewsUpdate'
 import NoPermission from '../../views/newsSandBox/NoPermission/NoPermission'
 import Published from '../../views/newsSandBox/publish-manage/Published'
 import Sunset from '../../views/newsSandBox/publish-manage/Sunset'
-import Unpublished from '../../views/newsSandBox/publish-manage/Unpublished'
+import WaitPublish from '../../views/newsSandBox/publish-manage/Waitpublish'
 import RightList from '../../views/newsSandBox/right-manage/RightList'
 import RoleList from '../../views/newsSandBox/right-manage/RoleList'
 import UserList from '../../views/newsSandBox/user-manage/UserList'
@@ -28,7 +28,7 @@ const LocalRouterMap: Map<string, React.ReactElement> = new Map([
   ['/news-manage/category', <NewsCategory />],
   ['/audit-manage/audit', <Audit />],
   ['/audit-manage/list', <AuditList />],
-  ['/publish-manage/unpublished', <Unpublished />],
+  ['/publish-manage/unpublished', <WaitPublish />],
   ['/publish-manage/published', <Published />],
   ['/publish-manage/sunset', <Sunset />],
   ['/news-manage/preview/:id', <NewsPreview />],

@@ -5,17 +5,17 @@ import {
 } from '@ant-design/icons'
 
 import { Layout, Dropdown, Menu, Avatar } from 'antd'
-import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { collapseState, reverse } from '../../redux/reducers/CollapseReducer'
 
 const { Header } = Layout
 
-export default function TopHeader() {
-  const [collapsed, setCollapsed] = useState(false)
-  const collapsedFunc = useCallback(() => {
-    setCollapsed(!collapsed)
-  }, [collapsed])
-
+function TopHeader() {
+  const collapsed = useSelector<{ collapse: collapseState }, boolean>(
+    (state) => state.collapse.collapseStatus,
+  )
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { role, username } = JSON.parse(localStorage.getItem('token') as string)
   const { roleName } = role
@@ -40,9 +40,19 @@ export default function TopHeader() {
   return (
     <Header className="site-layout-background" style={{ padding: '0 16px' }}>
       {collapsed ? (
-        <MenuUnfoldOutlined key="MenuUnfoldOutlined" onClick={collapsedFunc} />
+        <MenuUnfoldOutlined
+          key="MenuUnfoldOutlined"
+          onClick={() => {
+            dispatch(reverse())
+          }}
+        />
       ) : (
-        <MenuFoldOutlined key="MenuFoldOutlined" onClick={collapsedFunc} />
+        <MenuFoldOutlined
+          key="MenuFoldOutlined"
+          onClick={() => {
+            dispatch(reverse())
+          }}
+        />
       )}
 
       <div style={{ float: 'right' }}>
@@ -56,3 +66,5 @@ export default function TopHeader() {
     </Header>
   )
 }
+
+export default TopHeader

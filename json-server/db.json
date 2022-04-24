@@ -506,7 +506,7 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 2,
+      "publishState": 3,
       "createTime": 1615778715619,
       "star": 600,
       "view": 983,
@@ -671,12 +671,12 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 1,
+      "publishState": 2,
       "createTime": 1650534755839,
       "star": 0,
       "view": 0,
       "id": 14,
-      "publishTime": 0
+      "publishTime": 1650789196490
     },
     {
       "title": "123",
@@ -767,21 +767,6 @@
       "view": 0,
       "id": 21,
       "publishTime": 0
-    },
-    {
-      "title": "需要审核拒绝",
-      "categoryId": 2,
-      "content": "<p>拒绝</p>\n",
-      "region": "全球",
-      "author": "admin",
-      "roleId": 1,
-      "auditState": 2,
-      "publishState": 3,
-      "createTime": 1650765567971,
-      "star": 0,
-      "view": 0,
-      "id": 22,
-      "publishTime": 1650789120194
     },
     {
       "title": "亚洲1号编辑的文章",

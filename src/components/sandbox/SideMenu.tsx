@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import './index.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { collapseState } from '../../redux/reducers/CollapseReducer'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -55,6 +57,9 @@ interface IMenu {
 export default function SideMenu() {
   const nav = useNavigate()
   const loaction = useLocation()
+  const collapsed = useSelector<{ collapse: collapseState }, boolean>(
+    (state) => state.collapse.collapseStatus,
+  )
 
   const [menuList, setMenuList] = useState<IMenu[]>([])
   useEffect(() => {
@@ -103,7 +108,7 @@ export default function SideMenu() {
   const openKeys: string[] = ['/' + loaction.pathname.split('/')[1]]
   const selectedKeys: string[] = [loaction.pathname]
   return (
-    <Sider trigger={null} collapsible>
+    <Sider trigger={null} collapsible collapsed={collapsed}>
       <div style={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
         <div className="logo">全球新闻发布系统</div>
         <div style={{ flex: 1, overflow: 'auto' }}>

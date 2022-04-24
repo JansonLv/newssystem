@@ -46,4 +46,9 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## 报错问题
-# newssystem
+
+# newssystem, 调用富文本库（js），需要单独定义类型
+
+# 使用 redux 工具库，use，需要 ts 类型处理和异步操作
+
+#

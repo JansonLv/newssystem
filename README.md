@@ -47,8 +47,11 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## 报错问题
 
-# newssystem, 调用富文本库（js），需要单独定义类型
+### newssystem, 调用富文本库（js），需要单独定义类型
 
-# 使用 redux 工具库，use，需要 ts 类型处理和异步操作
+### 使用 redux 工具库，useHook，需要 ts 类型处理和异步操作
 
-#
+### redux 持久化处理
+
+https://blog.csdn.net/ilovethesunshine/article/details/109627560
+https://stackoverflow.com/questions/63761763/how-to-configure-redux-persist-with-redux-toolkit

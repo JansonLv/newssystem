@@ -12,9 +12,9 @@ let persistor = persistStore(store)
 const App = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <IndexRouter />
-      </PersistGate>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
+      <IndexRouter />
+      {/* </PersistGate> */}
     </Provider>
   )
 }

@@ -9,4 +9,4 @@ declare module 'react-draft-wysiwyg'
 
 declare module 'nprogress'
 
-declare module 'redux-persist/integration/react'
+// declare module 'redux-persist/integration/react'

@@ -5,8 +5,9 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom'
-import { getTokenSourceMapRange } from 'typescript'
 import Login from '../views/login/login'
+import Detail from '../views/news/detail'
+import News from '../views/news/news'
 import NewsSandBox from '../views/newsSandBox/newsSandBox'
 
 export default function indexRouter() {
@@ -14,6 +15,8 @@ export default function indexRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/news/detail/:id" element={<Detail />} />
         <Route
           path="*"
           element={
@@ -31,7 +34,7 @@ export default function indexRouter() {
 // 路由守卫、路由拦截器
 // https://blog.csdn.net/weixin_44084345/article/details/122865862
 // https://itcn.blog/p/1648750549862190.html
-// http://www.cxybb.com/article/u014418267/121474454
+// http://www.cxybb.com/article/u014 418267/121474454
 // https://icode.best/i/98468345735004
 // https://icode.best/i/98464745734989
 // https://icode.best/i/98447845734922

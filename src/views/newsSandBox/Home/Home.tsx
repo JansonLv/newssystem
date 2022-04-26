@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Col, List, Row } from 'antd'
+import { Avatar, Button, Card, Col, Drawer, List, Row } from 'antd'
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import {
   EditOutlined,
@@ -15,7 +15,10 @@ import _ from 'lodash'
 const { Meta } = Card
 
 export default function Home() {
+  const [visible, setvisible] = useState(false)
   const [viewList, setViewList] = useState<FullNews[]>([])
+  const [allList, setallList] = useState<FullNews[]>([])
+  const [pieChart, setpieChart] = useState<echarts.ECharts>()
   const {
     username,
     region,
@@ -32,37 +35,111 @@ export default function Home() {
       })
   }, [])
 
-  // 报错，暂无法解决
-  // useEffect(() => {
-  //   axios.get(`/news?publishState=2&_expand=category`).then((res) => {
-  //     renderBarView(
-  //       _.groupBy(res.data as FullNews[], (item) => item.category.title),
-  //     )
-  //   })
-  // }, [])
+  useEffect(() => {
+    axios.get(`/news?publishState=2&_expand=category`).then((res) => {
+      setallList(res.data)
+      renderBarView(
+        _.groupBy(res.data as FullNews[], (item) => item.category.title),
+      )
+    })
 
-  // const renderBarView = (obj: _.Dictionary<FullNews[]>) => {
-  //   console.log(obj, Object.keys(obj), Object.values(obj).length)
-  //   var myChart = echarts.init(document.getElementById('main')!)
-  //   // 绘制图表
-  //   myChart.setOption({
-  //     title: {
-  //       text: 'ECharts 入门示例',
-  //     },
-  //     tooltip: {},
-  //     xAxis: {
-  //       data: Object.keys(obj),
-  //     },
-  //     yAxis: {},
-  //     series: [
-  //       {
-  //         name: '数量',
-  //         type: 'bar',
-  //         data: Object.values(obj).length,
-  //       },
-  //     ],
-  //   })
-  // }
+    //  重画情空
+    return () => {
+      window.onreset = null
+    }
+  }, [])
+
+  const renderBarView = (obj: _.Dictionary<FullNews[]>) => {
+    console.log(obj, Object.keys(obj), Object.values(obj).length)
+    var myChart = echarts.init(document.getElementById('main')!)
+    // 绘制图表
+    myChart.setOption({
+      title: {
+        text: 'ECharts 入门示例',
+      },
+      tooltip: {},
+      xAxis: {
+        data: Object.keys(obj),
+        axisLabel: {
+          rotate: 45,
+        },
+      },
+      yAxis: {
+        minInterval: 1,
+        interval: 0,
+      },
+      series: [
+        {
+          name: '数量',
+          type: 'bar',
+          data: Object.values(obj).map((item) => item.length),
+        },
+      ],
+    })
+    window.onresize = () => {
+      myChart.resize()
+    }
+  }
+
+  const renderPieView = () => {
+    //数据处理工作
+
+    var currentList = allList.filter(
+      (item: FullNews) => item.author === username,
+    )
+    var groupObj = _.groupBy(
+      currentList,
+      (item: FullNews) => item.category.title,
+    )
+    var list = []
+    for (var i in groupObj) {
+      list.push({
+        name: i,
+        value: groupObj[i].length,
+      })
+    }
+
+    var myChart
+    if (!pieChart) {
+      myChart = echarts.init(document.getElementById('pie')!)
+      setpieChart(myChart)
+    } else {
+      myChart = pieChart
+    }
+    var option
+
+    option = {
+      title: {
+        text: '当前用户新闻分类图示',
+        // subtext: '纯属虚构',
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'item',
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+      },
+      series: [
+        {
+          name: '发布数量',
+          type: 'pie',
+          radius: '50%',
+          data: list,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
+    }
+
+    option && myChart.setOption(option)
+  }
 
   return (
     <div className="site-card-wrapper">
@@ -107,7 +184,16 @@ export default function Home() {
               />
             }
             actions={[
-              <SettingOutlined key="setting" />,
+              <SettingOutlined
+                key="setting"
+                onClick={() => {
+                  setTimeout(() => {
+                    setvisible(true)
+                    // init初始化
+                    renderPieView()
+                  }, 0)
+                }}
+              />,
               <EditOutlined key="edit" />,
               <EllipsisOutlined key="ellipsis" />,
             ]}
@@ -125,6 +211,26 @@ export default function Home() {
           </Card>
         </Col>
       </Row>
+
+      <Drawer
+        width="500px"
+        title="个人新闻分类"
+        placement="right"
+        closable={true}
+        onClose={() => {
+          setvisible(false)
+        }}
+        visible={visible}
+      >
+        <div
+          id="pie"
+          style={{
+            width: '100%',
+            height: '400px',
+            marginTop: '30px',
+          }}
+        ></div>
+      </Drawer>
 
       <div
         id="main"

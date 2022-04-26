@@ -6,6 +6,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `json-server`(接口服务)
+
+在 json-server 目录下执行 `json-server --watch ./db.json --port 8083`
+
 ### `yarn start`
 
 Runs the app in the development mode.\

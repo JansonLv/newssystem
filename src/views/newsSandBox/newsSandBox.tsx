@@ -7,17 +7,14 @@ import TopHeader from '../../components/sandbox/TopHeader'
 import NewsRouter from '../../components/sandbox/NewsRouter'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import React from 'react'
-import { loadingState } from '../../redux/reducers/LoadingReducer'
+import { useAppSelector } from '../../redux/store'
 
 const { Content } = Layout
 export default function NewsSandBox() {
   const nav = useNavigate()
 
-  const spinning = useSelector<{ loading: loadingState }, boolean>(
-    (state) => state.loading.spinning,
-  )
+  const spinning = useAppSelector((state) => state.loading.spinning)
 
   useEffect(() => {
     if (localStorage.getItem('token') === '') {

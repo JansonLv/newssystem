@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import './index.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
 import { collapseState } from '../../redux/reducers/CollapseReducer'
+import { useAppSelector } from '../../redux/store'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -57,9 +57,10 @@ interface IMenu {
 export default function SideMenu() {
   const nav = useNavigate()
   const loaction = useLocation()
-  const collapsed = useSelector<{ collapse: collapseState }, boolean>(
-    (state) => state.collapse.collapseStatus,
-  )
+  // const collapsed = useSelector<{ collapse: collapseState }, boolean>(
+  //   (state) => state.collapse.collapseStatus,
+  // )
+  const collapsed = useAppSelector((state) => state.collapse.collapseStatus)
 
   const [menuList, setMenuList] = useState<IMenu[]>([])
   useEffect(() => {

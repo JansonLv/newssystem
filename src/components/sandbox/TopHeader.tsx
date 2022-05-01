@@ -6,16 +6,14 @@ import {
 
 import { Layout, Dropdown, Menu, Avatar } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
 import { collapseState, reverse } from '../../redux/reducers/CollapseReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 
 const { Header } = Layout
 
 function TopHeader() {
-  const collapsed = useSelector<{ collapse: collapseState }, boolean>(
-    (state) => state.collapse.collapseStatus,
-  )
-  const dispatch = useDispatch()
+  const collapsed = useAppSelector((state) => state.collapse.collapseStatus)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { role, username } = JSON.parse(localStorage.getItem('token') as string)
   const { roleName } = role
